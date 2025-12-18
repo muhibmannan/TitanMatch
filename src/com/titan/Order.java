@@ -1,3 +1,5 @@
+package com.titan;
+
 public class Order {
     // 1. The Blueprint Variable (Fields)
     int id;

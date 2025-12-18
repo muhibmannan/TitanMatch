@@ -1,8 +1,21 @@
-import java.util.ArrayList;
+package com.titan;
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class OrderBook {
-    ArrayList<Order> buyOrders = new ArrayList<>();
-    ArrayList<Order> sellOrders = new ArrayList<>();
+
+    // --- NEW CODE (The "Tier 1" Data Structure) ---
+
+    // Rule for BUYs: Highest Price First (Descending Order)
+    // If prices are equal, we don't care about time yet (Basic Version)
+    PriorityQueue<Order> buyOrders = new PriorityQueue<>(
+            Comparator.comparingDouble((Order o) -> o.price).reversed()
+    );
+    // Rule for SELLs: Lowest Price First (Ascending Order - Default)
+    PriorityQueue<Order> sellOrders = new PriorityQueue<>(
+            Comparator.comparingDouble((Order o) -> o.price)
+    );
 
     // --- METHOD 1: Add Order ---
     public void addOrder(Order newOrder) {
@@ -17,33 +30,35 @@ public class OrderBook {
         match();
     }
 
-    // --- METHOD 2: Match (The Engine) ---
-    // This lives OUTSIDE addOrder, but inside the Class.
+    // --- METHOD 2: Match (Updated) ---
+
     public void match() {
-        // SAFETY CHECK: We can only match if we have BOTH a Buy and a Sell.
-        // If one list is empty, stop immediately.
+        // Same safety check
         if (buyOrders.isEmpty() || sellOrders.isEmpty()) {
             return;
         }
 
-        // 1. Get the Best Buy and Best Sell (First items in the list)
-        Order bestBuy = buyOrders.get(0);
-        Order bestSell = sellOrders.get(0);
+        // PEEK: Look at the top of the piles (Cheapest Sell / Richest Buy)
+        Order bestBuy = buyOrders.peek(); // .peek() is 0(1) - Instant!
+        Order bestSell = sellOrders.peek();
 
-        // 2. CHECK THE PRICES (The Logic)
-        // A Trade happens if: Buy Price is HIGH enough to match Sell Price.
+        // 2. CHECK PRICES
         if (bestBuy.price >= bestSell.price) {
             System.out.println("✅ MATCH FOUND!");
             System.out.println("   Buyer wants: $" + bestBuy.price);
             System.out.println("   Seller wants: $" + bestSell.price);
 
-            // Tier 1 logic: Remove them from the book (Simple version)
-            buyOrders.remove(0);
-            sellOrders.remove(0);
+            // EXECUTE (The Upgrade)
+            // .poll() removes the top item from the heap
+            buyOrders.poll();
+            sellOrders.poll();
+
+            // RECURSION CHECK:
+            // Since the order was removed, maybe the NEXT pair also matches?
+            // Let's call match() to check the next in line
+            match();
         } else {
             System.out.println("❌ No Match. Spread is too wide.");
         }
     }
-
-
 }
