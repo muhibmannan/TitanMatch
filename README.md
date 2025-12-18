@@ -1,14 +1,19 @@
-# My Engineering Journey: From Junior to Tier 1
+# TitanMatch: Low-Latency Order Matching Engine
 
-## Phase 1: The Logical Core (Current)
-- **Goal:** Build a working matching engine.
-- **Approach:** Used `ArrayList` for simplicity.
-- **Discovery:** I realized `ArrayList` creates a FIFO queue, which causes price priority bugs (cheap buyers blocking rich buyers). 
-- **Next Step:** Need to implement a `PriorityQueue` (Heap) to solve this.
+A high-performance limit order book (LOB) engine written in Java. Designed to simulate the core matching logic used in High-Frequency Trading (HFT) systems.
 
-## Phase 2: Performance Optimization (Planned)
-- [ ] Replace O(N) linear search with O(log N) data structures.
-- [ ] Implement JUnit tests for stress testing.
+## 🚀 Features
+- **Price-Time Priority Matching:** Ensures best execution for traders.
+- **Thread-Safe Architecture:** (In Progress) Handles concurrent order submissions.
+- **Zero-Garbage Object Pooling:** (Planned) Optimized for low latency.
 
-## Phase 3: Concurrency (Planned)
-- [ ] Implement `synchronized` blocks to handle multi-threaded race conditions.
+## 🛠 Tech Stack
+- **Language:** Java 17+
+- **Core:** PriorityQueues, HashMaps
+- **Testing:** JUnit 5
+
+## 📈 Evolution
+This project tracks my progression from basic collections to advanced systems programming:
+1.  **v0.1:** Initial `ArrayList` implementation (Logic Proof).
+2.  **v0.2:** `PriorityQueue` optimization for O(log n) matching logic. (Current)
+3.  **v1.0:** Concurrent implementation using Locking strategies. (Coming Soon)
