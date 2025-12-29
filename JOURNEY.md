@@ -19,6 +19,14 @@ Refactored the core engine from `ArrayList` to `PriorityQueue`.
 - **Solution:** Implemented a Max-Heap for Buy orders and Min-Heap for Sell orders using custom `Comparator`.
 - **Result:** The engine now automatically matches the best price first, regardless of arrival time. Complexity improved from O(N) to O(log N).
 
-## Phase 3: Concurrency (Planned)
+## Phase 3: Order Management (COMPLETED)
 
-- [ ] Implement `synchronized` blocks to handle multi-threaded race conditions.
+- [x] Implement `cancelOrder(id)` using HashMaps for O(1) access.
+- [x] Implement Lazy Deletion to handle cancelled orders efficiently.
+
+**Dev Log (29/12/2025):**
+Added cancellation logic.
+
+- **Problem:** Searching the PriorityQueue to remove an order is O(N) (slow).
+- **Solution:** Added a `HashMap` index to find orders instantly (O(1)).
+- **Technique:** Used "Lazy Deletion" (marking orders as `isActive = false`) so we don't have to reshuffle the heap immediately. Dead orders are removed only when they reach the top of the queue.

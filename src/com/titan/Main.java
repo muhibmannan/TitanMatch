@@ -3,21 +3,23 @@ package com.titan;
 public class Main {
     public static void main(String[] args) {
         OrderBook book = new OrderBook();
+        System.out.println("--- Market Open ---");
 
-        // 1. A Seller arrives wanting !100
-        book.addOrder(new Order(1, 100.00, 10, "SELL"));
+        // 1. Add a Buy Order for $100
+        System.out.println("Adding Order #1 (Buy @ $100)");
+        book.addOrder(new Order(1, 100.0, 10, "BUY"));
 
-        // 2. A "Cheap" Buyer arrives (offering $90)
-        // In the old ArrayList, this guy would block the fron of the line!
-        book.addOrder(new Order(2, 90.0, 10, "BUY"));
+        // 2. Cancel it immediately
+        System.out.println("\n--- Cancelling Order #1 ---");
+        book.cancelOrder(1);
 
-        System.out.println("--- Rich Buyer Arrives ---");
+        // 3. Add a Sell Order for $100
+        // In the old system, this would match.
+        // In the new system, Order #1 is "dead", so nothing should happen.
+        System.out.println("\n--- Adding Seller (Sell @ $100) ---");
+        book.addOrder(new Order(2, 100.0, 10, "SELL"));
 
-        // 3. A "Rich" Buyer arrives (offering $105)
-        book.addOrder(new Order(3, 105.0, 10, "BUY"));
-
-        // RESULT:
-        // If we see "Buyer wants: $105", your PriorityQueue works!
-        // If we see "No Match" (because $90 is stuck at top), it failed.
+        // 4. Verification
+        System.out.println("\nResult: If you see NO Match above, it worked.");
     }
 }
